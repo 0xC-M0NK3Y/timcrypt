@@ -29,7 +29,7 @@ void timcrypt(uint8_t *buf, size_t len, timcrypt_t key) {
     int j = 0x1F;
 
     for (size_t i = 0; i < len; i++) {
-        double tmp = cos((double)i - (double)j/0xA) * 0x100;
+        double tmp = cos((double)i - (double)j/0xA) * key.key[j];
         int k = (int)tmp;
         if (k < 0)
             k *= -0x1;
@@ -39,7 +39,7 @@ void timcrypt(uint8_t *buf, size_t len, timcrypt_t key) {
         uint64_t y = (buf[i] & 0x1) << 0x4 | (buf[i] & 0x2) << 0x2 | (buf[i] & 0x4) << 0x6 | (buf[i] & 0x8) << 0x8;
         y *= j;
         y += 0xFFFFF0 + i % 0xFFFF;
-        buf[i] = (((buf[i] >> 0x4) ^ timcryptetable[y % 0xFF]) << 4) | buf[i] & 0xF;
+        buf[i] = (((buf[i] >> 0x4) ^ timcryptetable[y % 0xFF]) << 4) | (buf[i] & 0xF);
         j--;
         if (j < 0)
             j = 0x1F;
