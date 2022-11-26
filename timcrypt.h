@@ -3,8 +3,10 @@
 
 #include <stdint.h>
 
+#define KEY_SIZE 32
+
 typedef struct timcrypt {
-    uint8_t key[32];
+    uint8_t key[KEY_SIZE];
 }   timcrypt_t;
 
 void timcrypt(uint8_t *buf, size_t len, timcrypt_t key);
